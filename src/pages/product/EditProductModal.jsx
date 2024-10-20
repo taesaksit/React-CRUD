@@ -6,9 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 
-export default function EditProductModal({ open, handleClose, product, fetchProducts }) {
+export default function EditProductModal({ open, handleClose, product, handleEditProduct }) {
   const {
     register,
     handleSubmit,
@@ -18,40 +17,27 @@ export default function EditProductModal({ open, handleClose, product, fetchProd
 
   // Update form values when product prop changes
   useEffect(() => {
-    if (product) {
 
+    if (product) {
+      
+      setValue('ProductID' , product.id);
       setValue('ProductName', product.ProductName || '');
       setValue('SupplierID', product.SupplierID || '');
       setValue('CategoryID', product.CategoryID || '');
       setValue('Unit', product.Unit || '');
       setValue('Price', product.Price || '');
 
-      console.log('UseEffect from update');
+      console.log('UseEffect from update' , product);
      
     }
   }, [product, setValue]);
 
-  const onSubmit = async (data) => {
-    try {
-      const response = await axios.put(`http://localhost:5500/api/products/${product.ProductID}`, data);
-
-
-      if (response.status === 200 && response.data[0].affectedRows === 1) {
-        alert('Product Updated successfully!');
-        fetchProducts();
-        handleClose();
-      } else {
-        alert('Product Update failed. Please try again.');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  
 
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="text-lg font-semibold">แก้ไขข้อมูลสินค้า</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleEditProduct)}>
         <DialogContent>
           <div className="space-y-4">
             <TextField

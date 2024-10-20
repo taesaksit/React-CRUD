@@ -1,30 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Paper, Button, IconButton } from '@mui/material';
 import { Trash2, Pencil } from 'lucide-react';
+
+import { fetchProducts, deleteProduct, updateProduct } from '../../services/productService';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
 
 export default function Product() {
+  
   const [products, setProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const fetchProducts = async () => {
+
+  useEffect(() => {
+    fetchAllProducts(); // Fetch products when the component mounts
+  }, []);
+
+  const fetchAllProducts = async () => {
+
     try {
-      const response = await axios.get('http://localhost:5500/api/products');
-      setProducts(response.data);
-      console.log(response);
+
+      const response = await fetchProducts(); // Await the service
+      setProducts(response); // Update the state with fetched data
+
+    } catch (err) {
+      console.log('Error fetching products:', err);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    try {
+      let confirmDelete = confirm('ยืนยันการลบ');
+      if (confirmDelete) {
+        await deleteProduct(productId);
+        fetchAllProducts();
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    return () => fetchProducts();
-  }, []);
+  const handleEditProduct = async (product) => {
+    let response = await updateProduct(product.ProductID, product);
+    if(response.status === 200){
+      alert('แก้ไขสำเร็จ')
+      handleEditClose(); 
+      await fetchAllProducts(); 
+    }
+  };
 
   const handleClickOpen = () => {
     setOpenModal(true);
@@ -32,18 +58,6 @@ export default function Product() {
 
   const handleClose = () => {
     setOpenModal(false);
-  };
-
-  const handleDelete = async (productId) => {
-    try {
-      let confirmDelete = confirm('ยืนยันการลบ')
-      if (confirmDelete) {
-        await axios.delete(`http://localhost:5500/api/products/${productId}`);
-        fetchProducts(); // Refresh the product list after deletion
-      }
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const handleEditOpen = (product) => {
@@ -78,7 +92,7 @@ export default function Product() {
             <Pencil size={20} />
           </IconButton>
           <IconButton
-            onClick={() => handleDelete(params.row.ProductID)}
+            onClick={() => handleDeleteProduct(params.row.ProductID)}
             className="text-red-500 hover:text-red-700"
             size="small"
             color='error'
@@ -115,13 +129,13 @@ export default function Product() {
       <AddProductModal
         open={openModal}
         handleClose={handleClose}
-        fetchProducts={fetchProducts}
+        fetchProducts={fetchAllProducts}
       />
       <EditProductModal
         open={openEditModal}
         handleClose={handleEditClose}
         product={selectedProduct}
-        fetchProducts={fetchProducts}
+        handleEditProduct={handleEditProduct}
       />
 
       <Paper style={{ height: 500, width: '100%' }}>

@@ -4,11 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Container, Box } from '@mui/material'
 
 // Pages
-import Home from './pages/Home'
-import Product from './pages/Product'
-import Category from './pages/Category'
-
-
+import Home from './pages/Home';
+import Product from './pages/product/Product';
+import Category from './pages/category/Category';
 
 export default function App() {
   return (
