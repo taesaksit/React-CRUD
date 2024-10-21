@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api', require('./routes/product'));
+app.use('/api', require('./routes/category'));
 
 
 app.listen(process.env.PORT, () => {

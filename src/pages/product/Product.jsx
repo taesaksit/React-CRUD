@@ -8,21 +8,15 @@ import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
 
 export default function Product() {
-  
+
   const [products, setProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
 
-  useEffect(() => {
-    fetchAllProducts(); // Fetch products when the component mounts
-  }, []);
-
   const fetchAllProducts = async () => {
-
     try {
-
       const response = await fetchProducts(); // Await the service
       setProducts(response); // Update the state with fetched data
 
@@ -30,6 +24,10 @@ export default function Product() {
       console.log('Error fetching products:', err);
     }
   };
+
+  useEffect(() => {
+    return () => fetchAllProducts(); // Fetch products when the component mounts
+  }, []);
 
   const handleDeleteProduct = async (productId) => {
     try {
@@ -45,10 +43,10 @@ export default function Product() {
 
   const handleEditProduct = async (product) => {
     let response = await updateProduct(product.ProductID, product);
-    if(response.status === 200){
+    if (response.status === 200) {
       alert('แก้ไขสำเร็จ')
-      handleEditClose(); 
-      await fetchAllProducts(); 
+      handleEditClose();
+      await fetchAllProducts();
     }
   };
 
