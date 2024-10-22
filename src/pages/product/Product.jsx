@@ -97,7 +97,8 @@ export default function Product() {
     { field: 'ProductID', headerName: 'Product ID', width: 100 },
     { field: 'ProductName', headerName: 'Product Name', width: 280 },
     { field: 'SupplierID', headerName: 'Supplier ID', width: 120 },
-    { field: 'CategoryID', headerName: 'Category ID', width: 120 },
+    // { field: 'CategoryID', headerName: 'Category ID', width: 120 },
+    { field: 'CategoryName', headerName: 'Category Name', width: 120 },
     { field: 'Unit', headerName: 'Unit', width: 250 },
     { field: 'Price', headerName: 'Price', width: 100 },
     {
@@ -133,6 +134,7 @@ export default function Product() {
     ProductName: product.ProductName,
     SupplierID: product.SupplierID,
     CategoryID: product.CategoryID,
+    CategoryName: product.CategoryName,
     Unit: product.Unit,
     Price: product.Price,
   }));

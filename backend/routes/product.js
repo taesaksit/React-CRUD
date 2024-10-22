@@ -5,7 +5,19 @@ const router = express.Router();
 
 router.get('/products', async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM products ORDER BY ProductID DESC');
+        const [rows] = await pool.query(`
+            SELECT 
+                ProductID,
+                ProductName,
+                SupplierID,
+                CategoryName,
+                products.CategoryID,
+                Unit,
+                Price 
+            FROM products 
+            INNER JOIN Categories ON products.CategoryID = Categories.CategoryID
+            ORDER BY ProductID DESC
+        `);
         res.json(rows);
 
     } catch (err) {
