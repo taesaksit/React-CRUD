@@ -6,33 +6,34 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 
-export default function EditProductModal({ open, handleClose, product, handleEditProduct }) {
+export default function EditProductModal({ open, handleClose, product, handleEditProduct, categories }) {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm();
 
   // Update form values when product prop changes
   useEffect(() => {
-
     if (product) {
-      
-      setValue('ProductID' , product.id);
+      setValue('ProductID', product.id);
       setValue('ProductName', product.ProductName || '');
       setValue('SupplierID', product.SupplierID || '');
       setValue('CategoryID', product.CategoryID || '');
       setValue('Unit', product.Unit || '');
       setValue('Price', product.Price || '');
 
-      console.log('UseEffect from update' , product);
-     
+      console.log('UseEffect from update', product);
     }
   }, [product, setValue]);
-
-  
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -58,15 +59,38 @@ export default function EditProductModal({ open, handleClose, product, handleEdi
               error={!!errors.SupplierID}
               helperText={errors.SupplierID?.message}
             />
-            <TextField
-              {...register('CategoryID', { required: 'กรุณากรอกรหัสหมวดหมู่' })}
-              label="รหัสหมวดหมู่"
+
+            <FormControl
               fullWidth
-              variant='standard'
+              variant="standard"
               margin="dense"
               error={!!errors.CategoryID}
-              helperText={errors.CategoryID?.message}
-            />
+            >
+              <InputLabel id="category-select-label">Category</InputLabel>
+              <Select
+                labelId="category-select-label"
+                id="CategoryID"
+                {...register('CategoryID', {
+                  required: 'CategoryID is required'
+                })}
+                label="Category"
+                // defaultValue={product ? product.CategoryID : ''}
+                value={watch('CategoryID') || (product ? product.CategoryID : '')} // Use watch to get the current value
+                onChange={(e) => setValue('CategoryID', e.target.value)} // Set value on change
+              >
+                {categories?.map((category) => (
+                  <MenuItem
+                    key={category.CategoryID}
+                    value={category.CategoryID}>
+                    {category.CategoryName}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.CategoryID && (
+                <FormHelperText>{errors.CategoryID.message}</FormHelperText>
+              )}
+            </FormControl>
+
             <TextField
               {...register('Unit', { required: 'กรุณากรอกหน่วย' })}
               label="หน่วย"

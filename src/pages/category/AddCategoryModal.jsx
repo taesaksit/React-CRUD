@@ -14,7 +14,7 @@ export default function AddCategoryModal({ open, handleClose ,onSubmit }) {
         register,
         handleSubmit,
         formState: { errors },
-        reset
+
     } = useForm();
 
     

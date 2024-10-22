@@ -11,7 +11,18 @@ export const fetchProducts = async () => {
         throw new Error('Failed to fetch products');
 
     }
-}
+};
+
+export const addProduct = async (product) => {
+    try {
+        const response = await axios.post(API_URL, product);
+        return response; 
+    } catch (err) {
+        console.error('Error adding product:', err); // Log the error for debugging
+        throw new Error('Failed to add product'); // Use a more accurate error message
+    }
+};
+
 
 export const deleteProduct = async (productId) => {
     try {
@@ -23,9 +34,9 @@ export const deleteProduct = async (productId) => {
 
 export const updateProduct = async (productId, updatedData) => {
     try {
-      const response = await axios.put(`${API_URL}/${productId}`, updatedData);
-      return response;
+        const response = await axios.put(`${API_URL}/${productId}`, updatedData);
+        return response;
     } catch (err) {
-      throw new Error('Failed to update product');
+        throw new Error('Failed to update product');
     }
-  };
+};

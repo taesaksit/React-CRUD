@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -6,44 +6,31 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 
-export default function AddProductModal({ open, handleClose, fetchProducts }) {
-    
+export default function AddProductModal({ open, handleClose, onInsert, categories }) {
     const {
         register,
         handleSubmit,
         formState: { errors },
-        reset
-    } = useForm();
-
-    const onSubmit = async (data) => {
-        try {
-            console.log('Form Data:', data);
-            const response = await axios.post('http://localhost:5500/api/products', data);
-
-            if (response.status === 200 && response.data[0].affectedRows === 1) {
-                alert('Product inserted successfully!');
-                reset();
-                fetchProducts();
-                handleClose();
-            } else {
-                alert('Product insertion failed. Please try again.');
-            }
-        } catch (err) {
-            console.log("Error from insert product: ", err);
+    } = useForm({
+        defaultValues: {
+            CategoryID: '',  // กำหนดค่าเริ่มต้นเป็นค่าว่าง
+            ProductName: '',
+            SupplierID: '',
+            Unit: '',
+            Price: ''
         }
-    };
-
-    const onClose = () => {
-        reset();
-        handleClose();
-    };
+    });
 
     return (
         <Dialog
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
             aria-labelledby="add-product-dialog-title"
             keepMounted={false}
         >
@@ -51,7 +38,7 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                 Add New Product
             </DialogTitle>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onInsert)}>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -61,7 +48,7 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                         variant="standard"
                         id="productName"
                         {...register('ProductName', {
-                            required: 'productName is required'
+                            required: 'Product name is required',
                         })}
                         error={!!errors.ProductName}
                         helperText={errors.ProductName ? errors.ProductName.message : ''}
@@ -76,28 +63,39 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                         variant="standard"
                         type="number"
                         {...register('SupplierID', {
-                            required: 'productSuplier is required'
+                            required: 'Supplier ID is required',
                         })}
                         error={!!errors.SupplierID}
                         helperText={errors.SupplierID ? errors.SupplierID.message : ''}
                         aria-describedby="supplierID-helper-text"
                     />
 
-                    <TextField
-                        margin="dense"
-                        id="CategoryID"
-                        label="Category ID"
+                    <FormControl
                         fullWidth
                         variant="standard"
-                        type="number"
-                        {...register('CategoryID', {
-                            required: 'CategoryID is required',
-                           
-                        })}
+                        margin="dense"
                         error={!!errors.CategoryID}
-                        helperText={errors.CategoryID ? errors.CategoryID.message : ''}
-                        aria-describedby="categoryID-helper-text"
-                    />
+                    >
+                        <InputLabel id="category-select-label">Category</InputLabel>
+                        <Select
+                            labelId="category-select-label"
+                            id="CategoryID"
+                            {...register('CategoryID', {
+                                required: 'CategoryID is required'
+                            })}
+                            label="Category"
+                            defaultValue=""
+                        >
+                            {categories?.map((category) => (
+                                <MenuItem key={category.CategoryID} value={category.CategoryID}>
+                                    {category.CategoryName}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        {errors.CategoryID && (
+                            <FormHelperText>{errors.CategoryID.message}</FormHelperText>
+                        )}
+                    </FormControl>
 
                     <TextField
                         margin="dense"
@@ -107,7 +105,7 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                         variant="standard"
                         type="text"
                         {...register('Unit', {
-                            required: 'productUnit is required'
+                            required: 'Unit is required',
                         })}
                         error={!!errors.Unit}
                         helperText={errors.Unit ? errors.Unit.message : ''}
@@ -122,7 +120,7 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                         variant="standard"
                         type="number"
                         {...register('Price', {
-                            required: 'productPrice is required'
+                            required: 'Price is required',
                         })}
                         error={!!errors.Price}
                         helperText={errors.Price ? errors.Price.message : ''}
@@ -131,17 +129,10 @@ export default function AddProductModal({ open, handleClose, fetchProducts }) {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button
-                        onClick={onClose}
-                        type="button"
-                    >
+                    <Button onClick={handleClose} type="button">
                         Cancel
                     </Button>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                    >
+                    <Button type="submit" variant="contained" color="primary">
                         Add Product
                     </Button>
                 </DialogActions>
