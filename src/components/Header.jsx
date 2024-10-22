@@ -15,6 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -26,6 +27,8 @@ function Header(props) {
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
+
+   
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -60,6 +63,7 @@ function Header(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
+
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar component="nav">
@@ -82,23 +86,23 @@ function Header(props) {
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
 
-                        <Button key="Home" 
-                                sx={{ color: '#fff' }}
-                                 component={Link} to="/"
+                        <Button key="Home"
+                            sx={{ color: '#fff' }}
+                            component={Link} to="/"
                         >
                             Home
                         </Button>
 
-                        <Button key="Product" 
-                                sx={{ color: '#fff' }}
-                                component={Link} to="/product"
+                        <Button key="Product"
+                            sx={{ color: '#fff' }}
+                            component={Link} to="/product"
                         >
                             Product
                         </Button>
 
-                        <Button key="Category" 
-                                sx={{ color: '#fff' }}
-                                component={Link} to="/category"
+                        <Button key="Category"
+                            sx={{ color: '#fff' }}
+                            component={Link} to="/category"
                         >
                             Category
                         </Button>
@@ -125,6 +129,7 @@ function Header(props) {
             </nav>
 
         </Box>
+
     );
 }
 

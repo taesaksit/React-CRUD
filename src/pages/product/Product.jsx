@@ -94,17 +94,17 @@ export default function Product() {
   };
 
   const columns = [
-    { field: 'ProductID', headerName: 'Product ID', width: 100 },
-    { field: 'ProductName', headerName: 'Product Name', width: 280 },
-    { field: 'SupplierID', headerName: 'Supplier ID', width: 120 },
-    // { field: 'CategoryID', headerName: 'Category ID', width: 120 },
-    { field: 'CategoryName', headerName: 'Category Name', width: 120 },
-    { field: 'Unit', headerName: 'Unit', width: 250 },
-    { field: 'Price', headerName: 'Price', width: 100 },
+    { field: 'ProductID', headerName: 'Product ID', flex: 3},
+    { field: 'ProductName', headerName: 'Product Name', flex: 5 },
+    { field: 'SupplierID', headerName: 'Supplier ID', flex: 3 },
+    // { field: 'CategoryID', headerName: 'Category ID', flex: 4 },
+    { field: 'CategoryName', headerName: 'Category Name', flex: 5},
+    { field: 'Unit', headerName: 'Unit', flex: 3},
+    { field: 'Price', headerName: 'Price', flex: 3 },
     {
       field: 'Manage',
       headerName: 'Manage',
-      width: 300,
+      flex: 3,
       renderCell: (params) => (
         <div className="space-x-2">
           <IconButton

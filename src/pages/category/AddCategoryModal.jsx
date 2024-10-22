@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
 
 
-export default function AddCategoryModal({ open, handleClose ,onSubmit }) {
+export default function AddCategoryModal({ open, handleClose, onSubmit }) {
 
     const {
         register,
@@ -17,7 +17,7 @@ export default function AddCategoryModal({ open, handleClose ,onSubmit }) {
 
     } = useForm();
 
-    
+
 
     return (
 
@@ -61,8 +61,12 @@ export default function AddCategoryModal({ open, handleClose ,onSubmit }) {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" >Add Category</Button>
+                    <Button onClick={handleClose} type="button">
+                        Cancel
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary">
+                        Add Product
+                    </Button>
                 </DialogActions>
             </form >
         </Dialog>
