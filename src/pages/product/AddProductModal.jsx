@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
 export default function AddProductModal({ open, handleClose, fetchProducts }) {
+    
     const {
         register,
         handleSubmit,
