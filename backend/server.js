@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use('/api', require('./routes/product'));
 app.use('/api', require('./routes/category'));
+app.use('/api', require('./routes/supplier'));
 
 
 app.listen(process.env.PORT, () => {
