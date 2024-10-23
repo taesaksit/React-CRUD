@@ -119,12 +119,12 @@ export default function Category() {
   ]
 
   const rows = categories.map((category) => ({
-    id: category.CategoryID, // Ensure each row has a unique 'id' field
+    id: category.CategoryID ,
     CategoryID: category.CategoryID,
     CategoryName: category.CategoryName,
     Description: category.Description,
-
   }));
+
 
   return (
     <div>

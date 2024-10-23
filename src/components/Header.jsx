@@ -56,6 +56,13 @@ function Header(props) {
                     </ListItemButton>
                 </ListItem>
 
+
+                <ListItem key="Supplier" disablePadding component={Link} to="/supplier">
+                    <ListItemButton sx={{ textAlign: 'center' }}>
+                        <ListItemText primary="Supplier" />
+                    </ListItemButton>
+                </ListItem>
+
             </List>
         </Box>
     );
@@ -106,6 +113,14 @@ function Header(props) {
                         >
                             Category
                         </Button>
+
+                        <Button key="Supplier"
+                            sx={{ color: '#fff' }}
+                            component={Link} to="/supplier"
+                        >
+                            Supplier
+                        </Button>
+
 
                     </Box>
                 </Toolbar>

@@ -7,6 +7,7 @@ import { Container, Box } from '@mui/material'
 import Home from './pages/Home';
 import Product from './pages/product/Product';
 import Category from './pages/category/Category';
+import Supplier from './pages/supplier/Supplier';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
               <Route path='/' element={<Home />} />
               <Route path='/product' element={<Product />} />
               <Route path='/category' element={<Category />} />
+              <Route path='/supplier' element={<Supplier />} />
             </Routes>
           </Container>
         </Box>
