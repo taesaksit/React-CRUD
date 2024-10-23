@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Paper, Button, IconButton } from '@mui/material';
 import { Trash2, Pencil } from 'lucide-react';
-import { fetchSuppliers, addSupplier } from '../../services/supplierService';
+import { fetchSuppliers, addSupplier, updateSupplier, deleteSupplier } from '../../services/supplierService';
 
 import AddSupplierModal from './AddSupplierModal';
+import EditSupplierModal from './EditSupplierModal';
 export default function Supplier() {
 
   const [suppliers, setSuppliers] = useState([]);
+  const [selectedSupplier, setSelectedSupplier] = useState(null);
+
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function Supplier() {
       renderCell: (params) => (
         <div className="space-x-2">
           <IconButton
-            onClick={() => console.log(params.row)}
+            onClick={() => handleEditOpen(params.row)}
             color='primary'
             size='large'
           >
@@ -54,7 +58,7 @@ export default function Supplier() {
           </IconButton>
 
           <IconButton
-            onClick={() => console.log(params.row.id)}
+            onClick={() => handleDelete(params.row.id)}
             color='error'
             size='large'
           >
@@ -89,13 +93,46 @@ export default function Supplier() {
     console.log(openAddModal);
   }
 
-  const handleInsert = async (supplierData , reset) => {
+  const handleInsert = async (supplierData, reset) => {
     const response = await addSupplier(supplierData);
     if (response.status === 200) {
       alert('Added supplier successfully')
       handleAddClose();
       await fetchAllSupplier();
       reset();
+    }
+  }
+
+  const handleEditOpen = (supplierData) => {
+    setSelectedSupplier(supplierData)
+    setOpenEditModal(true)
+
+  }
+
+  const handleEditClose = () => {
+    setOpenEditModal(false);
+  }
+
+  const handleEdit = async (supplierData) => {
+
+    let response = await updateSupplier(supplierData, supplierData.SupplierID);
+
+    if (response.status === 200) {
+      alert('แก้ไขสำเร็จ')
+      handleEditClose();
+      await fetchAllSupplier();
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      let confirmDelete = confirm('ยืนยันการลบ');
+      if (confirmDelete) {
+        await deleteSupplier(id);
+        await fetchAllSupplier();
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -116,6 +153,13 @@ export default function Supplier() {
         open={openAddModal}
         handleClose={handleAddClose}
         onSubmit={handleInsert}
+      />
+
+      <EditSupplierModal
+        open={openEditModal}
+        handleClose={handleEditClose}
+        supplier={selectedSupplier}
+        onUpdate={handleEdit}
       />
 
 
