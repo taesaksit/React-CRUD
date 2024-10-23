@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 
-export default function EditProductModal({ open, handleClose, product, handleEditProduct, categories }) {
+export default function EditProductModal({ open, handleClose, product, handleEditProduct, categories, suppliers }) {
   const {
     register,
     handleSubmit,
@@ -50,15 +50,37 @@ export default function EditProductModal({ open, handleClose, product, handleEdi
               error={!!errors.ProductName}
               helperText={errors.ProductName?.message}
             />
-            <TextField
-              {...register('SupplierID', { required: 'กรุณากรอกรหัสผู้ผลิต' })}
-              label="รหัสผู้ผลิต"
+           
+            <FormControl
               fullWidth
-              variant='standard'
+              variant="standard"
               margin="dense"
               error={!!errors.SupplierID}
-              helperText={errors.SupplierID?.message}
-            />
+            >
+              <InputLabel id="supplier-select-label">Supplier</InputLabel>
+              <Select
+                labelId="supplier-select-label"
+                id="SupplierID"
+                {...register('SupplierID', {
+                  required: 'SupplierID is required'
+                })}
+                label="Category"
+  
+                value={watch('SupplierID') || (product ? product.SupplierID : '')} // Use watch to get the current value
+                onChange={(e) => setValue('SupplierID', e.target.value)} // Set value on change
+              >
+                {suppliers?.map((supplier) => (
+                  <MenuItem
+                    key={supplier.SupplierID}
+                    value={supplier.SupplierID}>
+                    {supplier.SupplierName}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.CategoryID && (
+                <FormHelperText>{errors.CategoryID.message}</FormHelperText>
+              )}
+            </FormControl>
 
             <FormControl
               fullWidth

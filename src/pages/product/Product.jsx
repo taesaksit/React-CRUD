@@ -6,6 +6,7 @@ import { Trash2, Pencil } from 'lucide-react';
 
 import { fetchProducts, deleteProduct, updateProduct, addProduct } from '../../services/productService';
 import { fetchCategories } from '../../services/categoryService';
+import { fetchSuppliers } from '../../services/supplierService';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
 
@@ -13,6 +14,7 @@ export default function Product() {
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -23,8 +25,11 @@ export default function Product() {
     try {
       const response = await fetchProducts(); // Await the service
       const responseCategories = await fetchCategories(); // Await the service
+      const responseSuppliers = await fetchSuppliers(); // Await the service
+      
       setProducts(response);
       setCategories(responseCategories);
+      setSuppliers(responseSuppliers);
 
     } catch (err) {
       console.log('Error fetching products:', err);
@@ -96,7 +101,8 @@ export default function Product() {
   const columns = [
     { field: 'ProductID', headerName: 'Product ID', flex: 3},
     { field: 'ProductName', headerName: 'Product Name', flex: 5 },
-    { field: 'SupplierID', headerName: 'Supplier ID', flex: 3 },
+    // { field: 'SupplierID', headerName: 'Supplier ID', flex: 3 },
+    { field: 'SupplierName', headerName: 'Supplier Name', flex: 3 },
     // { field: 'CategoryID', headerName: 'Category ID', flex: 4 },
     { field: 'CategoryName', headerName: 'Category Name', flex: 5},
     { field: 'Unit', headerName: 'Unit', flex: 3},
@@ -133,6 +139,7 @@ export default function Product() {
     ProductID: product.ProductID,
     ProductName: product.ProductName,
     SupplierID: product.SupplierID,
+    SupplierName: product.SupplierName,
     CategoryID: product.CategoryID,
     CategoryName: product.CategoryName,
     Unit: product.Unit,
@@ -163,6 +170,8 @@ export default function Product() {
         product={selectedProduct}
         handleEditProduct={handleEditProduct}
         categories={categories} 
+        suppliers={suppliers} // pass
+        
       />
 
       <Paper style={{ height: 500, width: '100%' }}>
