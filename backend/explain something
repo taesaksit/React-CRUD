@@ -1,0 +1,5 @@
+app.use(cors()); - เปิดใช้งาน CORS (Cross-Origin Resource Sharing) เพื่อให้แอปพลิเคชันสามารถรับการร้องขอจากแหล่งข้อมูลภายนอก (เช่น จากโดเมนอื่น) ได้ โดยปกติแล้วเบราว์เซอร์จะจำกัดการเข้าถึงข้ามโดเมน แต่ด้วย cors() คุณสามารถกำหนดให้อนุญาตหรือจำกัดโดเมนที่เข้ามายัง API ของคุณได้
+
+app.use(express.json()); - เปิดใช้งาน middleware ที่ใช้ในการแปลงข้อมูล JSON จาก body ของคำขอ (request) ให้เป็นรูปแบบ JavaScript object ดังนั้นจึงสามารถเข้าถึงข้อมูลที่ส่งมาในรูปแบบ JSON ได้ง่ายขึ้น เช่น req.body
+
+app.use(express.urlencoded({ extended: true })); - เปิดใช้งาน middleware ที่ช่วยจัดการข้อมูลจาก form โดย extended: true จะใช้ library ช่วยในการแปลงข้อมูลที่ซับซ้อน เช่น arrays และ objects ในข้อมูลที่ถูกส่งมาผ่าน application/x-www-form-urlencoded
